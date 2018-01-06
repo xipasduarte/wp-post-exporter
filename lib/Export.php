@@ -7,17 +7,18 @@ use League\Csv\Writer;
 /**
  * Export selection to CSV.
  *
- * @package [vendor_name]
- * @since   [initial_version]
+ * @package PostExporter
+ * @since   1.0.0
  */
 class Export {
 
 	/**
 	 * Export to CSV.
-	 * @since [initial_version]
+	 * 
+	 * @since 1.1.0 Export post fields.
+	 * @since 1.0.0
 	 */
 	public static function export() {
-		error_log(print_r($_POST, true));
 		$query_args = [
 			'numberposts' => -1,
 			'fields'      => 'ids',

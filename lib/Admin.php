@@ -7,15 +7,15 @@ use League\Csv\Writer;
 /**
  * The dashboard-specific functionality of the plugin
  *
- * @package [vendor_name]
- * @since   [initial_version]
+ * @package PostExporter
+ * @since   1.0.0
  */
 class Admin {
 
 	/**
 	 * The plugin's instance.
 	 *
-	 * @since  [initial_version]
+	 * @since  1.0.0
 	 * @access private
 	 * @var    Plugin
 	 */
@@ -24,7 +24,7 @@ class Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since [initial_version]
+	 * @since 1.0.0
 	 * @param Plugin $plugin This plugin's instance.
 	 */
 	public function __construct( Plugin $plugin ) {
@@ -34,7 +34,7 @@ class Admin {
 	/**
 	 * Register hooks.
 	 *
-	 * @since [initial_version]
+	 * @since 1.0.0
 	 */
 	public function register() {
 		\add_action( 'wp_loaded', [ $this, 'export' ] );
@@ -44,7 +44,7 @@ class Admin {
 	/**
 	 * Register the plugin menu page.
 	 *
-	 * @since  [initial_version]
+	 * @since  1.0.0
 	 * @return void
 	 */
 	public function register_menu() {
@@ -60,6 +60,8 @@ class Admin {
 
 	/**
 	 * Callback to render the contents of the admin sub-menu page.
+	 * 
+	 * @since 1.1.0 Added post fields to export selection.
 	 * @since 1.0.0
 	 */
 	public function render_page() {
@@ -245,7 +247,7 @@ class Admin {
 	/**
 	 * Display default fields for selection to include in export.
 	 * 
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	public function render_default_select() {
 		$fields = [
