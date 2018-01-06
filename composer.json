@@ -1,7 +1,7 @@
 {
   "name": "xipasduarte/wp-post-exporter",
   "description": "Export any WordPress post type to CVS.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "wordpress-plugin",
   "keywords": ["wordpress", "plugin", "export", "cvs"],
   "homepage": "https://github.com/xipasduarte/wp-post-exporter",
