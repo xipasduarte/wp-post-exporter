@@ -1,11 +1,23 @@
 {
-  "name": "xipasduarte/WPPostExporter",
-  "description": "Export any post type to CVS.",
+  "name": "xipasduarte/wp-post-exporter",
+  "description": "Export any WordPress post type to CVS.",
+  "version": "1.0.1",
   "type": "wordpress-plugin",
-  "keywords": ["wordpress", "plugin"],
+  "keywords": ["wordpress", "plugin", "export", "cvs"],
+  "homepage": "https://github.com/xipasduarte/wp-post-exporter",
   "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Pedro Duarte",
+      "email": "xipasduarte@gmail.com",
+      "homepage": "https://github.com/xipasduarte"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/xipasduarte/wp-post-exporter/issues"
+  },
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.0.10",
     "composer/installers": "~1.0",
     "league/csv": "^9.0"
   },
@@ -13,7 +25,6 @@
     "phpunit/phpunit": "*@stable",
     "10up/wp_mock": "@dev"
   },
-  "authors": [],
   "autoload": {
     "psr-4": {
       "xipasduarte\\WP\\Plugin\\PostExporter\\": "lib/"
