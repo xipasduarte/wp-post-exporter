@@ -74,22 +74,46 @@ class Admin {
 			all.', 'wp-post-exporter' )
 		);
 
-		// FIXME: put wordpress nonces.
 		printf(
 			'<form method="post">
-				%s
-				<table class="form-table">
-					<tbody>',
+				%s',
 			\wp_nonce_field( 'wp_post_exporter_export', '_wppe_nonce', true, false )
 		);
 
+		// Filter
+		printf(
+			'<h2 class="title">%s</h2>
+			<p>%s</p>',
+			\esc_html__( 'Filters', 'wp-post-exporter' ),
+			\esc_html__( 'Apply filters to constraint posts that are exported.', 'wp-post-exporter' )
+		);
+
+		echo '<table class="form-table">';
+		echo '<tbody>';
+
 		$this->render_type_select();
 		$this->render_status_select();
+
+		echo '</tbody>';
+		echo '</table>';
+
+		// Data selection
+		printf(
+			'<h2 class="title">%s</h2>
+			<p>%s</p>',
+			\esc_html__( 'Data to export', 'wp-post-exporter' ),
+			\esc_html__( "Select which fields you'd like to export.", 'wp-post-exporter' )
+		);
+
+		echo '<table class="form-table">';
+		echo '<tbody>';
+
+		$this->render_default_select();
 		$this->render_meta_select();
 
 		echo '</tbody>';
 		echo '</table>';
-		
+
 		printf(
 			'<p><input type="submit" class="button button-primary" value="%s" /></p>',
 			\esc_attr__( 'Export', 'wp-post-exporter' )
@@ -215,6 +239,38 @@ class Admin {
 			</tr>',
 			\esc_html__( 'Post meta', 'wp-post-exporter' ),
 			$this->build_options( $meta )
+		);
+	}
+
+	/**
+	 * Display default fields for selection to include in export.
+	 * 
+	 * @since 1.0.0
+	 */
+	public function render_default_select() {
+		$fields = [
+			'post_author'  => \__( 'Author', 'wp-post-exporter' ),
+			'post_date'    => \__( 'Creation date', 'wp-post-exporter' ),
+			'post_content' => \__( 'Content', 'wp-post-exporter' ),
+			'post_title'   => \__( 'Title', 'wp-post-exporter' ),
+			'post_excerpt' => \__( 'Excerpt', 'wp-post-exporter' ),
+			'post_status'  => \__( 'Status', 'wp-post-exporter' ),
+			'post_type'    => \__( 'Type', 'wp-post-exporter' ),
+		];
+
+		printf(
+			'<tr>
+				<th scope="row">%s</th>
+				<td>
+					<fieldset>
+						<select name="post_fields[]" size="6" multiple="multiple">
+							%s
+						</select>
+					</fieldset>
+				</td>
+			</tr>',
+			\esc_html__( 'Post fields', 'wp-post-exporter' ),
+			$this->build_options( $fields )
 		);
 	}
 
