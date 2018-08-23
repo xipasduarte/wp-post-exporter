@@ -1,6 +1,6 @@
 <?php
 
-namespace [namespace_tests]
+namespace xipasduarte\WP\Plugin\PostExporter\Tests;
 
 class SampleTest extends PHPUnit_Framework_TestCase {
 
