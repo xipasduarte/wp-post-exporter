@@ -212,7 +212,8 @@ class Admin {
 		$post_id = \get_posts( [
 			'numberposts' => 1,
 			'post_type'   => 'registration',
-			'post_status' => \get_post_stati(),
+			// FIXME: select one of each status to get all available meta.
+			'post_status' => [ 'publish', 'approved', 'rejected' ],
 			'fields'      => 'ids',
 		] );
 		$meta = \get_post_meta( array_shift( $post_id ) );
