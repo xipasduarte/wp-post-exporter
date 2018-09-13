@@ -60,7 +60,7 @@ class Admin {
 
 	/**
 	 * Callback to render the contents of the admin sub-menu page.
-	 * 
+	 *
 	 * @since 1.1.0 Added post fields to export selection.
 	 * @since 1.0.0
 	 */
@@ -71,8 +71,8 @@ class Admin {
 		printf(
 			'<p>%s</p>',
 			esc_html__( 'The exporter will retrive the database values for the
-			selected content, images, videos and other types os media, other 
-			than text, will be displayed as a link to their sources or not at 
+			selected content, images, videos and other types os media, other
+			than text, will be displayed as a link to their sources or not at
 			all.', 'wp-post-exporter' )
 		);
 
@@ -129,7 +129,7 @@ class Admin {
 	 * Display available post types for selection.
 	 * @since 1.0.0
 	 */
-	public function render_type_select() {
+	private function render_type_select() {
 		$types      = \get_post_types( [], 'objects' );
 		$post_types = '';
 
@@ -160,13 +160,13 @@ class Admin {
 
 	/**
 	 * Display available post stati to be selected.
-	 * 
+	 *
 	 * Status is not post_type specific and so every registered status is
 	 * available for selection.
-	 * 
+	 *
 	 * @since 1.0.0
 	 */
-	public function render_status_select() {
+	private function render_status_select() {
 		$stati         = \get_post_stati( [], 'objects' );
 		$builtin_stati = [];
 		$custom_stati  = [];
@@ -201,14 +201,14 @@ class Admin {
 
 	/**
 	 * Display meta selection to include in export.
-	 * 
+	 *
 	 * Meta keys are related to posts when they are saved, there is no way to
 	 * determine which meta keys are related to a given post_type without
 	 * sampling a post.
-	 * 
+	 *
 	 * @since 1.0.0
 	 */
-	public function render_meta_select() {
+	private function render_meta_select() {
 		$post_id = \get_posts( [
 			'numberposts' => 1,
 			'post_type'   => 'registration',
@@ -247,10 +247,10 @@ class Admin {
 
 	/**
 	 * Display default fields for selection to include in export.
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
-	public function render_default_select() {
+	private function render_default_select() {
 		$fields = [
 			'post_author'  => \__( 'Author', 'wp-post-exporter' ),
 			'post_date'    => \__( 'Creation date', 'wp-post-exporter' ),
