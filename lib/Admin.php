@@ -2,8 +2,6 @@
 
 namespace xipasduarte\WP\Plugin\PostExporter;
 
-use League\Csv\Writer;
-
 /**
  * The dashboard-specific functionality of the plugin
  *
@@ -146,7 +144,7 @@ class Admin {
 				<th scope="row">%s</th>
 				<td>
 					<fieldset>
-						<select name="post_type[]" placeholder="%s" size="6" multiple="multiple">
+						<select name="post_type[]" placeholder="%s" size="6" multiple="multiple" required>
 							%s
 						</select>
 					</fieldset>
@@ -209,24 +207,23 @@ class Admin {
 	 * @since 1.0.0
 	 */
 	private function render_meta_select() {
-		$post_id = \get_posts( [
-			'numberposts' => 1,
-			'post_type'   => 'registration',
-			// FIXME: select one of each status to get all available meta.
-			'post_status' => [ 'publish', 'approved', 'rejected' ],
-			'fields'      => 'ids',
-		] );
-		$meta = \get_post_meta( array_shift( $post_id ) );
+		global $wpdb;
 
-		foreach ( $meta as $key => &$value ) {
+		$results = $wpdb->get_results(
+			"SELECT DISTINCT meta_key FROM {$wpdb->prefix}postmeta",
+			ARRAY_N
+		);
 
-			// Avoid private keys.
-			if ( strpos( $key, '_' ) === 0 ) {
-				unset( $meta[ $key ] );
-				continue;
+		$meta = [
+			'' => __( 'All for post_type', 'wp-post-exporter' ),
+		];
+
+		foreach ( $results as $meta_key ) {
+			$key = array_shift( $meta_key );
+
+			if ( isset( $key[0] ) && $key[0] !== '_' ) {
+				$meta[ $key ] = $key;
 			}
-
-			$meta[ $key ] = $key;
 		}
 
 		printf(
