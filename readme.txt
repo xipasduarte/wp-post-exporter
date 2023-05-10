@@ -12,7 +12,7 @@ Export your posts to CSV.
 
 == Description ==
 
-With this plugin you'll be able to select which data to export to the generated 
+With this plugin you'll be able to select which data to export to the generated
 files.
 
 Here are the current available fields for selection:
@@ -53,7 +53,7 @@ Yes. Currently in the pipeline are: terms, dates and date spans. You can submit 
 == Changelog ==
 
 = 1.1.0 =
-* Support for post fields: post_author, post_date, post_content, post_title, 
+* Support for post fields: post_author, post_date, post_content, post_title,
 post_excerpt, post_status, post_type
 
 = 1.0.2 =
