@@ -66,7 +66,7 @@ class Export {
 		$post  = \get_post( $post_id );
 		$field = $config['name'];
 		if ( $field !== 'permalink' && ! isset( $post->$field ) ) {
-			$post_data[ $field ] = 'NULL';
+			$post_data[ $field ] = '';
 			return $post_data;
 		}
 
@@ -94,7 +94,7 @@ class Export {
 		$meta_key    = $config['name'];
 		$meta_values = \get_post_meta( $post_id, $meta_key );
 		if ( empty( $meta_values ) ) {
-			$post_data[ $meta_key ] = 'NULL';
+			$post_data[ $meta_key ] = '';
 			return $post_data;
 		}
 
@@ -158,7 +158,7 @@ class Export {
 		$taxonomy = $config['taxonomy'];
 		$terms    = \wp_get_object_terms( $post_id, $taxonomy );
 		if ( \is_wp_error( $terms ) ) {
-			$post_data[ $taxonomy ] = 'NULL';
+			$post_data[ $taxonomy ] = '';
 			return $post_data;
 		}
 
