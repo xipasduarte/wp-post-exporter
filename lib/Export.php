@@ -65,7 +65,7 @@ class Export {
 	private function get_post_data( int $post_id, array $config, array $post_data ) : array {
 		$post  = \get_post( $post_id );
 		$field = $config['name'];
-		if ( ! isset( $post->$field ) ) {
+		if ( $field !== 'permalink' && ! isset( $post->$field ) ) {
 			$post_data[ $field ] = 'NULL';
 			return $post_data;
 		}
