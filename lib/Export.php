@@ -3,6 +3,8 @@
 namespace xipasduarte\WP\Plugin\PostExporter;
 
 use Exception;
+use WP_Post;
+use WP_Term;
 
 class Export {
 
@@ -69,7 +71,13 @@ class Export {
 		}
 
 		// Check the data entry for transforms on the post_data
-		$value = $post->$field;
+		if ( $field === 'permalink' ) {
+			$value = get_permalink( $post->ID );
+
+		} else {
+			$value = $post->$field;
+		}
+
 		$key   = $field;
 		if ( isset( $config['rename'] ) ) {
 			$key = $config['rename'];
@@ -83,34 +91,49 @@ class Export {
 	}
 
 	private function get_post_meta( int $post_id, array $config, array $post_data ) : array {
-		$meta_key   = $config['name'];
-		$meta_value = \get_post_meta( $post_id, $meta_key );
-		if ( empty( $meta_value ) ) {
+		$meta_key    = $config['name'];
+		$meta_values = \get_post_meta( $post_id, $meta_key );
+		if ( empty( $meta_values ) ) {
 			$post_data[ $meta_key ] = 'NULL';
 			return $post_data;
 		}
 
-		$meta_value = array_map( 'maybe_unserialize', $meta_value );
+		$meta_values = array_map( 'maybe_unserialize', $meta_values );
 
 		// Check the data entry for transforms on the post_meta
 
-		$value = $meta_value;
-		$key   = $meta_key;
+		$values = $meta_values;
+		$key    = $meta_key;
 		if ( isset( $config['rename'] ) ) {
 			$key = $config['rename'];
 		}
 
 		// TODO: add filter
 
-		// TODO: relational_mapping
+		// Relational_mapping.
+		if ( isset( $config['mapping'] ) ) {
+			$values = array_map(
+				function ( $value ) use ( $config ) {
+					if ( is_array( $value ) ) {
+						return array_map(
+							fn ( $sub_value ) => $this->apply_meta_mapping( $sub_value, $config['mapping'] ),
+							$value
+						);
+					}
+					return $this->apply_meta_mapping( $value, $config['mapping'] );
+				},
+				$values
+			);
+		}
 
 		// TODO: When we add the filter, we need to be careful if the value returned is not in the original post meta list of values.
-		if ( is_array( $value ) ) {
+		$value = $values;
+		if ( is_array( $values ) ) {
 			$string_value = '';
-			if ( count( $value ) === 1 ) {
-				$string_value = is_array( $value[0] ) ? implode( ',', $value[0] ) : $value[0];
+			if ( count( $values ) === 1 ) {
+				$string_value = is_array( $values[0] ) ? implode( ',', $values[0] ) : $values[0];
 
-			} else if ( count( $value ) > 1 ) {
+			} else if ( count( $values ) > 1 ) {
 				$mapped_value = array_map(
 					function ( $val ) {
 						if ( is_array( $val ) ) {
@@ -118,7 +141,7 @@ class Export {
 						}
 						return "[{$val}]";
 					},
-					$value
+					$values
 				);
 				$string_value = implode( ',', $mapped_value );
 			}
@@ -144,7 +167,6 @@ class Export {
 		$value = [];
 		foreach ( $terms as $term ) {
 			// TODO: add filter
-			// TODO: relational_mapping
 
 			$value[] = $term->$field;
 		}
@@ -153,6 +175,29 @@ class Export {
 
 		$post_data[ $taxonomy ] = $value;
 		return $post_data;
+	}
+
+	private function apply_meta_mapping( $value, array $config ) : string {
+		if ( $config['type'] === 'term' ) {
+			$term = \get_term( $value );
+			if ( ! $term instanceof WP_Term ) {
+				return '';
+			}
+			$field = $config['name'];
+			return $term->$field ?? '';
+		}
+		if ( $config['type'] === 'post' ) {
+			$post = \get_post( $value );
+			if ( ! $post instanceof WP_Post ) {
+				return '';
+			}
+			$field = $config['name'];
+			if ( $field === 'attachment_url' && $post->post_type === 'attachment' ) {
+				return wp_get_attachment_url( $post->ID );
+			}
+			return $post->$field ?? '';
+		}
+		return $value;
 	}
 
 	private function validate_config( array $config ) {
