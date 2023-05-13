@@ -2,6 +2,8 @@
 
 namespace xipasduarte\WP\Plugin\PostExporter;
 
+use League\Csv\Writer;
+
 /**
  * The dashboard-specific functionality of the plugin
  *
@@ -285,7 +287,12 @@ class Admin {
 			isset( $_POST['_wppe_nonce'] ) &&
 			\check_admin_referer( 'wp_post_exporter_export', '_wppe_nonce' )
 		) {
-			Export::export();
+			$config      = []; // TODO: get from $_POST and change config in frontend.
+			$export_data = ( new Export() )->export( $config );
+			$writer = Writer::createFromPath( 'php://temp', 'w+');
+			$writer->insertAll( $export_data );
+			$writer->output('export.csv');
+			die();
 		}
 	}
 

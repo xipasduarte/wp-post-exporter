@@ -61,6 +61,7 @@ class Plugin {
 	public function run() {
 		$this->set_locale();
 		$this->define_admin_hooks();
+		$this->define_cli_commands();
 	}
 
 	/**
@@ -115,5 +116,18 @@ class Plugin {
 		foreach ( $components as $component ) {
 			$component->register();
 		}
+	}
+
+	private function define_cli_commands() {
+		$commands = [
+			CLI\Export::class => 'wp-post-exporter',
+		];
+		\add_action( 'init', function () use ( $commands ) {
+			foreach ( $commands as $cli_class => $command_name ) {
+				if ( class_exists( 'WP_CLI' ) ) {
+					\WP_CLI::add_command( $command_name, $cli_class );
+				}
+			}
+		} );
 	}
 }

@@ -3,7 +3,7 @@
  * @wordpress-plugin
  * Plugin Name: WP Post Exporter
  * Plugin URI:  https://github.com/xipasduarte/wp-post-exporter
- * Description: Export any post type to CVS.
+ * Description: Export any post type to CSV.
  * Version:     1.0.0
  * Author:      Pedro Duarte
  * Author URI:  https://github.com/xipasduarte

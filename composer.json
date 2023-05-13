@@ -17,9 +17,10 @@
     "issues": "https://github.com/xipasduarte/wp-post-exporter/issues"
   },
   "require": {
-    "php": ">=7.0.10",
+    "php": ">=8",
     "composer/installers": "^1.9",
-    "league/csv": "^9.0"
+    "league/csv": "^9.0",
+    "wp-cli/wp-cli": "^2.7"
   },
   "require-dev": {
     "phpunit/phpunit": "*@stable",
@@ -37,6 +38,9 @@
   },
   "minimum-stability": "stable",
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/installers": true
+    }
   }
 }

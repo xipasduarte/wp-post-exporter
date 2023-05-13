@@ -2,19 +2,21 @@
 
 namespace xipasduarte\WP\Plugin\PostExporter\Tests;
 
-class SampleTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class SampleTest extends TestCase {
 
 	/**
 	 * Setup mocking functions.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		\WP_Mock::setUp();
 	}
 
 	/**
 	 * Destroy mocking functions.
 	 */
-	public function tearDown() {
+	public function tearDown() : void {
 		\WP_Mock::tearDown();
 	}
 
